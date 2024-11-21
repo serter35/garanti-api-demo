@@ -6,6 +6,7 @@ use App\Http\Requests\TerminalUpdateRequest;
 use App\Models\Terminal;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Response;
 
 class TerminalController extends Controller
@@ -25,6 +26,8 @@ class TerminalController extends Controller
      */
     public function update(TerminalUpdateRequest $request, Terminal $terminal): RedirectResponse
     {
+        Gate::authorize('update', $terminal);
+
         $terminal->fill($request->safe()->except('provision_user_password'));
 
         // Parola boş bırakılabilir yapıldı. Hash işlemi Model Cast içinde uygulandı.
